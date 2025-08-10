@@ -32,7 +32,6 @@ init_datetime(app)  # Handle UTC dates in timestamps
 def index():
     return render_template("pages/home.jinja")
 
-
 #-----------------------------------------------------------
 # About page route
 #-----------------------------------------------------------
