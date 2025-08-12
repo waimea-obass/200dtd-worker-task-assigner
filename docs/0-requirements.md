@@ -39,43 +39,43 @@ I need the website to be smooth and efficient to use, with the navigation being 
 
 ### Relevance to the System
 
-If the system is laggy or 
+If the system is laggy or clunky then it will be undesirable to use
 
 ### Impact / Considerations
 
-Replace this text with an explanation of what you will need to consider moving forward and how the project will be impacted by this implication.
+I will need to consider how smoothly the assimilation between the different web pages happens ie the click of a button.
 
 
 
-## Accessability
+## Accessibility
 
-Replace this text with a clear explanation of what the implication means.
+I need the website to be accessible to my end user.
 
 ### Relevance to the System
 
-Replace this text with an explanation of why the implication is relevant to this particular project.
+If the system was not accessible no body would want to/ use it
 
 ### Impact / Considerations
 
-Replace this text with an explanation of what you will need to consider moving forward and how the project will be impacted by this implication.
+If the system is accessible then more people would want to utilise it.
 
 
 
 ## Aesthetic
 
-Replace this text with a clear explanation of what the implication means.
+I need to website to be aesthetically pleasing
 
 ### Relevance to the System
 
-Replace this text with an explanation of why the implication is relevant to this particular project.
+If it looked ugly then nobody would want to utilise my website.
 
 ### Impact / Considerations
 
-Replace this text with an explanation of what you will need to consider moving forward and how the project will be impacted by this implication.
+I will take into account the colour scheme, font, background of the website and make it all of a similar, aesthetically pleasing scheme.
 
 
 
-## NAME OF IMPLICATION 5
+## 
 
 Replace this text with a clear explanation of what the implication means.
 
