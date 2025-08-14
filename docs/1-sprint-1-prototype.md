@@ -12,7 +12,7 @@ Develop a prototype that simulates the key functionality of the system, then tes
 
 ## Initial Database Design
 
-Replace this text with notes regarding the DB design.
+The first design was not great
 
 ![SCREENSHOT OF DB DESIGN](screenshots/example.png)
 
