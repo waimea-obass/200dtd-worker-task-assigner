@@ -1,6 +1,6 @@
 #===========================================================
-# YOUR PROJECT TITLE HERE
-# YOUR NAME HERE
+# Worker Task Assigner Project
+# Ollie Bass
 #-----------------------------------------------------------
 # BRIEF DESCRIPTION OF YOUR PROJECT HERE
 #===========================================================
@@ -19,7 +19,7 @@ from app.helpers.time    import init_datetime, utc_timestamp, utc_timestamp_now
 app = Flask(__name__)
 
 # Configure app
-init_session(app)   # Setup a session for messages, etc.
+init_session(app)   # Setup a session for messages, etc.            
 init_logging(app)   # Log requests
 init_error(app)     # Handle errors and exceptions
 init_datetime(app)  # Handle UTC dates in timestamps
