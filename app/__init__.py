@@ -2,7 +2,7 @@
 # Worker Task Assigner Project
 # Ollie Bass
 #-----------------------------------------------------------
-# BRIEF DESCRIPTION OF YOUR PROJECT HERE
+# Assigns workers to certain tasks and keeps track of tasks and workers information.
 #===========================================================
 
 from flask import Flask, render_template, request, flash, redirect
@@ -33,45 +33,37 @@ def index():
     return render_template("pages/home.jinja")
 
 #-----------------------------------------------------------
-# About page route
+# Tasks page route - Show all the tasks, and new task form
 #-----------------------------------------------------------
-@app.get("/about/")
-def about():
-    return render_template("pages/about.jinja")
-
-
-#-----------------------------------------------------------
-# Things page route - Show all the things, and new thing form
-#-----------------------------------------------------------
-@app.get("/things/")
-def show_all_things():
+@app.get("/tasks/")
+def show_all_tasks():
     with connect_db() as client:
         # Get all the things from the DB
-        sql = "SELECT id, name FROM things ORDER BY name ASC"
+        sql = "SELECT id, name FROM tasks ORDER BY id ASC"
         params = []
         result = client.execute(sql, params)
-        things = result.rows
+        task = result.rows
 
         # And show them on the page
-        return render_template("pages/things.jinja", things=things)
+        return render_template("pages/tasks.jinja", tasks=task)
 
 
 #-----------------------------------------------------------
-# Thing page route - Show details of a single thing
+# Worker page route - Show all Workers
 #-----------------------------------------------------------
-@app.get("/thing/<int:id>")
-def show_one_thing(id):
+@app.get("/workers/<int:id>")
+def show_all_workers():
     with connect_db() as client:
         # Get the thing details from the DB
-        sql = "SELECT id, name, price FROM things WHERE id=?"
+        sql = "SELECT id, name, notes, specialty, ethic FROM workers WHERE id=? ORDER BY name ASC"
         params = [id]
         result = client.execute(sql, params)
 
         # Did we get a result?
         if result.rows:
             # yes, so show it on the page
-            thing = result.rows[0]
-            return render_template("pages/thing.jinja", thing=thing)
+            worker = result.rows[0]
+            return render_template("pages/workers.jinja", workers=worker)
 
         else:
             # No, so show error
@@ -79,41 +71,43 @@ def show_one_thing(id):
 
 
 #-----------------------------------------------------------
-# Route for adding a thing, using data posted from a form
+# Route for adding a worker, using data posted from a form
 #-----------------------------------------------------------
 @app.post("/add")
-def add_a_thing():
+def add_a_worker():
     # Get the data from the form
     name  = request.form.get("name")
-    price = request.form.get("price")
+    notes = request.form.get("notes")
+    specialty = request.form.get("specialty")
+    ethic = request.form.get("ethic")
 
     # Sanitise the text inputs
     name = html.escape(name)
 
     with connect_db() as client:
         # Add the thing to the DB
-        sql = "INSERT INTO things (name, price) VALUES (?, ?)"
-        params = [name, price]
+        sql = "INSERT INTO workers (name, price) VALUES (?, ?)"
+        params = [name, notes, specialty, ethic]
         client.execute(sql, params)
 
         # Go back to the home page
-        flash(f"Thing '{name}' added", "success")
-        return redirect("/things")
+        flash(f"Worker '{name}' added", "success")
+        return redirect("/workers")
 
 
 #-----------------------------------------------------------
 # Route for deleting a thing, Id given in the route
 #-----------------------------------------------------------
 @app.get("/delete/<int:id>")
-def delete_a_thing(id):
+def delete_a_worker(id):
     with connect_db() as client:
         # Delete the thing from the DB
-        sql = "DELETE FROM things WHERE id=?"
+        sql = "DELETE FROM workers WHERE id=?"
         params = [id]
         client.execute(sql, params)
 
         # Go back to the home page
-        flash("Thing deleted", "success")
-        return redirect("/things")
+        flash("Worker removed", "thanks")
+        return redirect("/workers")
 
 

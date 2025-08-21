@@ -1,0 +1,108 @@
+{#=====================================================
+  Worker list page
+  - List of Workers and their information
+  - Form for adding a new thing
+=====================================================#}
+
+{% extends 'pages/workers.jinja' %}
+
+
+{% block title %}
+
+    Flask Demo - Worker Page
+
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Workers</h1>
+
+
+    <article>
+
+        <ul>
+            {% for worker in workers %}
+
+                <li>
+                    <a href="/workers/{{ workers.id }}">
+                        {{ workers.name }}
+                    </a>
+                </li>
+
+            {% else %}
+
+                <p>None!</p>
+
+            {% endfor %}
+        </ul>
+
+    </article>
+
+
+    <article>
+
+        <h3>Add a New Thing...</h3>
+
+        <form action="/add" method="POST">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Worker"
+                required
+            >
+            <input
+                type="text"
+                name="notes"
+                placeholder="Some notes"
+                required
+            >
+            <input
+                type="text"
+                name="specialty"
+                placeholder="Specialty"
+                required
+            >
+
+            <input
+                type="number"
+                name="ethic"
+                min="0"
+                placeholder="Their Work Ethic"
+                required
+            >
+
+            <button>Add worker</button>
+
+        </form>
+        {% extends 'pages/workers.jinja' %}
+
+
+{% block content %}
+
+    <h1>New Worker</h1>
+
+
+    <article>
+
+        <header>
+            <h3>{{ worker.name }}</h3>
+        </header>
+
+        <p>Ethic: <strong>${{ worker.ethic }}</strong></p>
+
+        <footer>
+            <a href="/delete/{{ worker.id }}" onclick="return confirm('Really delete?');">Delete</a>
+        </footer>
+
+
+    </article>
+
+
+    <a role="button" href="/tasks">To Tasks</a>
+
+
+
+{% endblock %}
+
