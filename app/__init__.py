@@ -73,7 +73,7 @@ def show_all_workers():
 #-----------------------------------------------------------
 # Route for adding a worker, using data posted from a form
 #-----------------------------------------------------------
-@app.post("/add")
+@app.post("/workers/add")
 def add_a_worker():
     # Get the data from the form
     name  = request.form.get("name")
@@ -109,5 +109,4 @@ def delete_a_worker(id):
         # Go back to the home page
         flash("Worker removed", "thanks")
         return redirect("/workers")
-
 
