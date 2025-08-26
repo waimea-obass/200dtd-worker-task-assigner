@@ -30,22 +30,55 @@ init_datetime(app)  # Handle UTC dates in timestamps
 #-----------------------------------------------------------
 @app.get("/")
 def index():
-    return render_template("pages/home.jinja")
-
-#-----------------------------------------------------------
-# Tasks page route - Show all the tasks, and new task form
-#-----------------------------------------------------------
-@app.get("/tasks/")
-def show_all_tasks():
     with connect_db() as client:
-        # Get all the things from the DB
-        sql = "SELECT id, name FROM tasks ORDER BY id ASC"
+        # Get all the tasks from the DB
+        sql = """
+            SELECT 
+                id, 
+                name, 
+                priority, 
+                completed 
+            FROM tasks 
+            WHERE completed=0
+            ORDER BY priority DESC
+        """
         params = []
         result = client.execute(sql, params)
-        task = result.rows
+        tasks = result.rows
+
+                # Get all the tasks from the DB
+        sql = """
+            SELECT 
+                id, 
+                name, 
+                priority, 
+                completed 
+            FROM tasks 
+            WHERE completed=0
+            ORDER BY priority DESC
+        """
+        params = []
+        result = client.execute(sql, params)
+        tasks = result.rows
+
+        # Get all the workers from the DB
+        sql = """
+            SELECT 
+                workers.id, 
+                workers.name,
+                allocations.task_id
+
+            FROM workers
+            JOIN allocations ON workers.id = allocations.worker_id
+
+            ORDER BY workers.id ASC
+        """
+        params = []
+        result = client.execute(sql, params)
+        workers = result.rows
 
         # And show them on the page
-        return render_template("pages/tasks.jinja", tasks=task)
+        return render_template("pages/home.jinja", tasks=tasks, workers=workers)
 
 
 #-----------------------------------------------------------

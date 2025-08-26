@@ -4,43 +4,64 @@
   - Form for adding a new thing
 =====================================================#}
 
-{% extends 'pages/workers.jinja' %}
+{% extends 'pages/base.jinja' %}
 
 
 {% block title %}
 
-    Flask Demo - Worker Page
+    Tasks
 
 {% endblock %}
 
 
 {% block content %}
 
-    <h1>Workers</h1>
+    <h1>Tasks</h1>
 
 
     <article>
 
-        <ul>
-            {% for worker in workers %}
+        <table>
+        
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Priority</th>
+                    <th>Workers</th>
+                </tr>
+            </thead>
+        
+            <tbody>
+            
+                {% for task in tasks %}
 
-                <li>
-                    <a href="/workers/{{ workers.id }}">
-                        {{ workers.name }}
-                    </a>
-                </li>
+                    <tr>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.priority }}</td>
 
-            {% else %}
+                        <td>
+                            {% for worker in workers %}
+                                {# Has this worker been alloocated to this task? #}
+                                {% if worker.task_id == task.id %}
+                                    <a href="/worker/{{ worker.id }}" title="{{ worker.name }}">{{ worker.id }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
 
-                <form href="workers/add"></form>
-
-            {% endfor %}
-        </ul>
+                {% else %}
+                    None
+                {% endfor %}            
+            
+            </tbody>
+        
+        </table>
+            
 
     </article>
 
 
-    <article>
+    {# <article>
 
         <h3>Add a New Thing...</h3>
 
@@ -75,30 +96,7 @@
 
             <button>Add worker</button>
 
-        </form>
-        {% extends 'pages/workers.jinja' %}
+        </form> #}
 
 
-{% block content %}
-
-    <h1>New Worker</h1>
-
-
-    <article class="content">
-
-        <header>
-            <h3>{{ worker.name }}</h3>
-        </header>
-
-        <p>Ethic: <strong>${{ worker.ethic }}</strong></p>
-
-        <footer>
-            <a href="/delete/{{ worker.id }}" onclick="return confirm('Really delete?');">Delete</a>
-        </footer>
-
-
-    </article>
-
-
-    <a role="button" href="/tasks">To Tasks</a>
-
+{% endblock %}
