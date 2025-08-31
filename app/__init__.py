@@ -47,19 +47,6 @@ def index():
         tasks = result.rows
 
                 # Get all the tasks from the DB
-        sql = """
-            SELECT 
-                id, 
-                name, 
-                priority, 
-                completed 
-            FROM tasks 
-            WHERE completed=0
-            ORDER BY priority DESC
-        """
-        params = []
-        result = client.execute(sql, params)
-        tasks = result.rows
 
         # Get all the workers from the DB
         sql = """
@@ -79,7 +66,24 @@ def index():
 
         # And show them on the page
         return render_template("pages/home.jinja", tasks=tasks, workers=workers)
-
+    
+@app.get("/")
+def index():
+    with connect_db() as client:
+         sql = """
+            SELECT 
+                id, 
+                name, 
+                priority, 
+                completed 
+            FROM tasks 
+            WHERE completed=1
+            ORDER BY priority DESC
+        """
+    params = []
+    result = client.execute(sql, params)
+    taskdone = result.rows
+    return render_template("pages/home.jinja", taskdone=taskdone)
 
 #-----------------------------------------------------------
 # Worker page route - Show all Workers
@@ -89,7 +93,7 @@ def show_all_workers():
     with connect_db() as client:
         # Get the thing details from the DB
         sql = "SELECT id, name, notes, specialty, ethic FROM workers WHERE id=? ORDER BY name ASC"
-        params = [id]
+        params = []
         result = client.execute(sql, params)
 
         # Did we get a result?
@@ -106,7 +110,7 @@ def show_all_workers():
 #-----------------------------------------------------------
 # Route for adding a worker, using data posted from a form
 #-----------------------------------------------------------
-@app.post("/workers/add")
+@app.post("/workers")
 def add_a_worker():
     # Get the data from the form
     name  = request.form.get("name")

@@ -4,19 +4,19 @@
   - Form for adding a new thing
 =====================================================#}
 
-{% extends 'pages/base.jinja' %}
+{% extends 'pages/workers.jinja' %}
 
 
 {% block title %}
 
-    Tasks
+    Workers
 
 {% endblock %}
 
 
 {% block content %}
 
-    <h1>Tasks</h1>
+    <h1>Workers</h1>
 
 
     <article>
@@ -25,19 +25,22 @@
         
             <thead>
                 <tr>
-                    <th>Task Name</th>
-                    <th>Priority</th>
-                    <th>Workers</th>
+                    <th>Worker Name</th>
+                    <th>Specialty</th>
+                    <th>Notes</th>
+                    <th>Work Ethic</th>
                 </tr>
             </thead>
         
             <tbody>
             
-                {% for task in tasks %}
+                {% for worker in workers %}
 
                     <tr>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.priority }}</td>
+                        <td>{{ worker.name }}</td>
+                        <td>{{ worker.specialty }}</td>
+                        <td>{{ worker.notes }}</td>
+                        <td>{{ worker.workethic }}</td>
 
                         <td>
                             {% for worker in workers %}
@@ -56,7 +59,11 @@
             </tbody>
         
         </table>
+            <form>
+            <h1>Add a New Worker</h1>
+            <article>No idea</article>
             
+            </form>
 
     </article>
 
