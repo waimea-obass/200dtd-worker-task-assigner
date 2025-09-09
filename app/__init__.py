@@ -65,35 +65,35 @@ def index():
         workers = result.rows
 
         # And show them on the page
-        return render_template("pages/home.jinja", tasks=tasks, workers=workers)
+        return render_template("pages/home.jinja", tasks=tasks, workers=workers) #taskdone=taskdone)
     
-@app.get("/")
-def index():
-    with connect_db() as client:
-         sql = """
-            SELECT 
-                id, 
-                name, 
-                priority, 
-                completed 
-            FROM tasks 
-            WHERE completed=1
-            ORDER BY priority DESC
-        """
-    params = []
-    result = client.execute(sql, params)
-    taskdone = result.rows
-    return render_template("pages/home.jinja", taskdone=taskdone)
+# @app.get("/")
+# def index():
+#     with connect_db() as client:
+#          sql = """
+#             SELECT 
+#                 id, 
+#                 name, 
+#                 priority, 
+#                 completed 
+#             FROM tasks 
+#             WHERE completed=1
+#             ORDER BY priority DESC
+#         """
+#     params = []
+#     result = client.execute(sql, params)
+#     taskdone = result.rows
+#     return render_template("pages/home.jinja", taskdone=taskdone)
 
 #-----------------------------------------------------------
 # Worker page route - Show all Workers
 #-----------------------------------------------------------
 @app.get("/workers/<int:id>")
-def show_all_workers():
+def show_all_workers(id):
     with connect_db() as client:
         # Get the thing details from the DB
         sql = "SELECT id, name, notes, specialty, ethic FROM workers WHERE id=? ORDER BY name ASC"
-        params = []
+        params = [id]
         result = client.execute(sql, params)
 
         # Did we get a result?
@@ -107,29 +107,54 @@ def show_all_workers():
             return not_found_error()
 
 
+# #-----------------------------------------------------------
+# # Route for adding a worker, using data posted from a form
+# #-----------------------------------------------------------
+# @app.post("/addworker/")
+# def add_a_worker():
+#     # Get the data from the form
+#     name  = request.form.get("name")
+#     notes = request.form.get("notes")
+#     specialty = request.form.get("specialty")
+#     ethic = request.form.get("ethic")
+
+#     # Sanitise the text inputs
+#     name = html.escape(name)
+
+#     with connect_db() as client:
+#         # Add the thing to the DB
+#         sql = "INSERT INTO workers (name, notes, specialty, ethic) VALUES (?,?,?,?)"
+#         params = [name, notes, specialty, ethic]
+#         client.execute(sql, params)
+
+#         # Go back to the home page
+#         flash(f"Worker '{name}' added", "success")
+#         return redirect("/workers")
+
 #-----------------------------------------------------------
-# Route for adding a worker, using data posted from a form
+# Route for adding an allocation, using data posted from a form
 #-----------------------------------------------------------
-@app.post("/workers")
+@app.post("/")
 def add_a_worker():
     # Get the data from the form
-    name  = request.form.get("name")
-    notes = request.form.get("notes")
-    specialty = request.form.get("specialty")
-    ethic = request.form.get("ethic")
+    task_id  = request.form.get("task_id")
+    worker_id = request.form.get("worker_id")
+    priority = request.form.get("priority")
 
     # Sanitise the text inputs
-    name = html.escape(name)
+    task_id = html.escape(task_id)
 
     with connect_db() as client:
         # Add the thing to the DB
-        sql = "INSERT INTO workers (name, price) VALUES (?, ?)"
-        params = [name, notes, specialty, ethic]
+        sql = "INSERT INTO allocation (task_id, worker_id, prority) VALUES (?,?,?)"
+        params = [task_id, worker_id, priority]
         client.execute(sql, params)
 
         # Go back to the home page
-        flash(f"Worker '{name}' added", "success")
-        return redirect("/workers")
+        flash(f"The task '{task_id}' was added successfully!")
+        return redirect("/home")
+
+
 
 
 #-----------------------------------------------------------
